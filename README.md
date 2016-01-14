@@ -10,3 +10,4 @@ ease-uc, raf-uc
 # Special thanks
 https://gist.github.com/desandro/1866474
 https://github.com/component/ease
+# animation-uc
