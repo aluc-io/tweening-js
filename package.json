@@ -1,0 +1,34 @@
+{
+  "name": "animation-uc",
+  "version": "0.2.0",
+  "main": "animation-uc.js",
+  "dependencies": {
+    "ease-uc": "^0.0.3",
+    "raf-uc": "^0.0.2",
+    "underscore": "^1.8.3"
+  },
+  "description": "Notice!! Do not use now, this version is test beta verison. Light weight javascript library that support the requestAnimationFrame and easing functions for performance",
+  "directories": {
+    "example": "examples"
+  },
+  "devDependencies": {
+    "browserify": "^11.0.1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc"
+  },
+  "keywords": [
+    "requestAnimationFrame",
+    "animationLibrary",
+    "ease"
+  ],
+  "author": {
+    "name": "Alfred UC",
+    "email": "b6pzeusbc54tvhw5jgpyw8pwz2x6gs@gmail.com"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc/issues"
+  }
+}
