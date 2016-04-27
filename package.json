@@ -1,13 +1,15 @@
 {
   "name": "animation-uc",
-  "version": "0.2.0",
-  "main": "animation-uc.js",
+  "version": "1.0.0",
+  "main": "index.js",
   "dependencies": {
     "ease-uc": "^0.0.3",
-    "raf-uc": "^0.0.2",
-    "underscore": "^1.8.3"
+    "request-animation-frame-polyfill": "^0.1.2"
   },
-  "description": "Notice!! Do not use now, this version is test beta verison. Light weight javascript library that support the requestAnimationFrame and easing functions for performance",
+  "scripts": {
+    "test": "node examples/test.js"
+  },
+  "description": "Light weight javascript library that for implementing animation using requestAnimationFrame with easing functions",
   "directories": {
     "example": "examples"
   },
