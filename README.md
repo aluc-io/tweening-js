@@ -1,3 +1,6 @@
+[![npm version](https://img.shields.io/npm/v/animation-uc.svg?style=flat-square)](https://www.npmjs.com/package/animation-uc)
+[![Build Status](https://travis-ci.org/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc.svg?branch=master)](https://travis-ci.org/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc)
+
 # animation-uc
 Light weight javascript library that for implementing animation using requestAnimationFrame with easing functions.
 
@@ -179,12 +182,13 @@ Result is
 ```
 
 ## Todo
-1. Appling Promise pattern
+1. Add Promise pattern
 
 
 ## dependencies
-ease-uc, request-animation-frame-polyfill
+- ease-uc
+- request-animation-frame-polyfill
 
 ## Special thanks
-https://gist.github.com/desandro/1866474
-https://github.com/component/ease
+- https://gist.github.com/desandro/1866474
+- https://github.com/component/ease
