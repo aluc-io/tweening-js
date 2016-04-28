@@ -17,15 +17,15 @@ refer to below Usage.
 var aniUC = require('animation-uc');
 
 console.log('1. object to object test');
-aniUC.from({ top: 0 }).to({ top: 200 }, { step: console.log, done: function() {
+aniUC.from({ top: 0, left: 100 }).to({ top: 200, left: -50 }, { step: console.log, done: function() {
 
 	console.log('');
 	console.log('2. number to number test');
-	aniUC.from( 0 ).to( 200, { step: console.log, done: function() {
+	aniUC.from( 0 ).to( 200, { step: console.log, ease: 'out-quad', done: function() {
 	
 		console.log('');
 		console.log('3. number to -number test');
-		aniUC.from( 30 ).to( -123, { step: console.log, done: function() {
+		aniUC.from( 30 ).to( -123, { step: console.log, ease: 'in-cube', done: function() {
 
 			console.log('');
 			console.log('4. -number to number test');
@@ -43,32 +43,33 @@ aniUC.from({ top: 0 }).to({ top: 200 }, { step: console.log, done: function() {
 Result is
 ```
 1. object to object test
-{ top: 1.9950000000000003 }
-{ top: 35.28874999999999 }
-{ top: 38 }
-{ top: 50.355000000000004 }
-{ top: 64.69874999999999 }
-{ top: 78.32000000000001 }
-{ top: 90.48 }
-{ top: 102 }
-{ top: 112.88 }
-{ top: 121.875 }
-{ top: 132.13875 }
-{ top: 141.68 }
-{ top: 149.49875 }
-{ top: 159.04875 }
-{ top: 164.29874999999998 }
-{ top: 171.11999999999998 }
-{ top: 176.19500000000002 }
-{ top: 181.99999999999997 }
-{ top: 185.955 }
-{ top: 190.09875 }
-{ top: 193.33875000000003 }
-{ top: 196.21875 }
-{ top: 198.19500000000002 }
-{ top: 199.28 }
-{ top: 199.87499999999997 }
-{ top: 200 }
+{ top: 1.9950000000000003, left: 98.50375 }
+{ top: 16.63875, left: 87.5209375 }
+{ top: 30.72, left: 76.96000000000001 }
+{ top: 45.11999999999999, left: 66.16 }
+{ top: 58.879999999999995, left: 55.84 }
+{ top: 72.00000000000001, left: 45.99999999999999 }
+{ top: 85.23875, left: 36.0709375 }
+{ top: 96.32000000000001, left: 27.75999999999999 }
+{ top: 107.52, left: 19.36 }
+{ top: 118.08000000000001, left: 11.439999999999998 }
+{ top: 128.59875, left: 3.550937499999989 }
+{ top: 137.28, left: -2.960000000000008 }
+{ top: 145.39875, left: -9.049062500000005 }
+{ top: 153.92000000000002, left: -15.440000000000012 }
+{ top: 161.71875, left: -21.2890625 }
+{ top: 168, left: -26 }
+{ top: 174.07999999999998, left: -30.560000000000002 }
+{ top: 179.83874999999998, left: -34.879062499999975 }
+{ top: 184.32, left: -38.24000000000001 }
+{ top: 188.48, left: -41.360000000000014 }
+{ top: 192, left: -44 }
+{ top: 195.03875, left: -46.27906250000001 }
+{ top: 197.12000000000003, left: -47.84000000000003 }
+{ top: 198.72000000000003, left: -49.04000000000002 }
+{ top: 199.67999999999998, left: -49.75999999999999 }
+{ top: 199.99875, left: -49.99906250000001 }
+{ top: 200, left: -50 }
 
 2. number to number test
 13.755
