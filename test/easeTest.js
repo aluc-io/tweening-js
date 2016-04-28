@@ -8,6 +8,9 @@ for( var key in easeUC ) {
 	easeList.push( key );
 }
 
+console.log('');
+console.log('');
+console.log('Ease function test------');
 console.log( easeList );
 next();
 
