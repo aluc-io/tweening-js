@@ -97,6 +97,7 @@
 		}
 
 		var startTime = Date.now();
+		var timer;
 		function check() {
 
 			var now = Date.now();
@@ -113,10 +114,16 @@
 
 			step( updateState( from, to, r ) );
 
-			raf( check );
+			timer = raf( check );
 		}
 
-		raf( check );
+		timer = raf( check );
+
+		return {
+			abort: function() {
+				caf( timer );
+			}
+		};
 	}
 
 	exports.from = function( from ) {
