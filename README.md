@@ -11,7 +11,7 @@ You have to implement `step` function and implement draw your world most beautif
 refer to below Usage.
 
 
-## Usage
+## Usage 1
 
 ```javascript
 var aniUC = require('animation-uc');
@@ -181,6 +181,22 @@ Result is
 -122.86921875
 -123
 ```
+
+## Usage 2 : abort
+
+```javascript
+var handler = aniUC.from( 0 ).to( 1000, { 
+	step: console.log,
+	duration: 5000,
+	ease: 'out-quad'
+});
+
+setTimeout( function() {
+	handler.abort();
+}, 1000 );
+```
+
+
 
 ## Todo
 1. Add Promise pattern
