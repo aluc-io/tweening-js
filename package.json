@@ -1,44 +1,51 @@
 {
-  "name": "animation-uc",
-  "version": "1.1.3",
-  "main": "index.js",
-  "dependencies": {
-    "ease-uc": "^0.0.3",
-    "request-animation-frame-polyfill": "^0.1.3"
-  },
+  "name": "tweening-js",
+  "main": "lib/tweening-js.js",
+  "version": "2.0.0-rc.1",
+  "description": "Javascript tweening library which support Promise interface written in typescript",
   "scripts": {
-    "test": "node test/test.js && node test/easeTest.js && node test/abortTest.js",
-    "build:reactExample": "browserify -t [ babelify --presets [ es2015 react ] ] examples/reactExample/example.js -o examples/reactExample/bundle.js"
-  },
-  "description": "Light weight javascript library that for implementing animation using requestAnimationFrame with easing functions",
-  "directories": {
-    "example": "examples"
-  },
-  "devDependencies": {
-    "babel": "^6.5.2",
-    "babel-cli": "^6.7.7",
-    "babel-preset-es2015": "^6.6.0",
-    "babel-preset-react": "^6.5.0",
-    "babelify": "^7.3.0",
-    "browserify": "^13.0.0",
-    "react": "^15.0.1",
-    "react-dom": "^15.0.1"
+    "clean": "rimraf lib && rimraf build",
+    "build": "webpack && npx tsc && mv build/*.d.ts ./lib/",
+    "test": "babel-node --extensions \".ts\" -- ./src/tweening-js.test.ts",
+    "prepare": "yarn clean && yarn build && yarn test"
   },
   "repository": {
     "type": "git",
-    "url": "https://github.com/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc"
+    "url": "https://github.com/aluc-io/tweening-js"
   },
   "keywords": [
-    "requestAnimationFrame",
-    "animationLibrary",
-    "ease"
+    "tween",
+    "tweening",
+    "tweeningjs",
+    "tweening-js",
+    "raf",
+    "requestAnimationFrame"
   ],
   "author": {
-    "name": "Alfred UC",
+    "name": "aluc",
     "email": "b6pzeusbc54tvhw5jgpyw8pwz2x6gs@gmail.com"
   },
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/b6pzeusbc54tvhw5jgpyw8pwz2x6gs/animation-uc/issues"
+    "url": "https://github.com/aluc-io/tweening-js/issues"
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.6.4",
+    "@babel/core": "^7.6.4",
+    "@babel/node": "^7.6.3",
+    "@babel/plugin-transform-runtime": "^7.6.2",
+    "@babel/preset-env": "^7.6.3",
+    "@babel/preset-typescript": "^7.6.0",
+    "@babel/runtime": "^7.6.3",
+    "@types/node": "^12.12.5",
+    "babel-loader": "^8.0.6",
+    "mkdirp": "^0.5.1",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.4",
+    "webpack": "^4.41.2",
+    "webpack-cli": "^3.3.10"
+  },
+  "dependencies": {
+    "request-animation-frame-polyfill": "^1.0.0-rc.6"
   }
 }
