@@ -1,5 +1,6 @@
 import { tween, easeFunctions } from './tweening-js'
 import sinon from 'sinon'
+import { declareOpaqueType } from '@babel/types'
 
 const { inQuad, inOutQuad } = easeFunctions
 
@@ -12,25 +13,27 @@ const sumEachGap = (arr1: number[], arr2: number[]) => {
 
 const last = (arr: any[]) => arr[arr.length-1]
 
+const delay = (n: number) => new Promise(resolve => setTimeout(resolve, n))
+
 test("sumEachGap", () => {
   expect(sumEachGap([1,2,3], [1,2,3])).toBe(0)
   expect(sumEachGap([1,2,3], [2,3,4])).toBe(3)
   expect(sumEachGap([1,2,3], [3,4,1])).toBe(6)
 })
 
-test("tween number", (doneTest) => {
+test("tween number", (doneCallback) => {
   let target: number
   const realStep = (p: number) => { target = p }
   const step = sinon.fake((p: number) => realStep(p))
   const from = 0, to = 100, duration = 100
   tween({ from, to, step, duration, done: () => {
     expect(target).toBe(to)
-    expect(step.callCount).toBeGreaterThan(5)
-    doneTest()
+    expect(step.callCount).toBeGreaterThan(4)
+    doneCallback()
   }})
 })
 
-test("tween object", (doneTest) => {
+test("tween object", (doneCallback) => {
   let target: number
   const realStep = (p: number) => { target = p }
   const step = sinon.fake((p: number) => realStep(p))
@@ -39,20 +42,20 @@ test("tween object", (doneTest) => {
   const duration = 100
   tween({ from, to, step, duration, done: () => {
     expect(target).toStrictEqual(to)
-    expect(step.callCount).toBeGreaterThan(5)
-    doneTest()
+    expect(step.callCount).toBeGreaterThan(4)
+    doneCallback()
   }})
 })
 
-test("promise interface", (doneTest) => {
+test("promise interface", (doneCallback) => {
   let target: number
   const realStep = (p: number) => { target = p }
   const step = sinon.fake((p: number) => realStep(p))
   const from = 0, to = 100, duration = 100
   tween({ from, to, step, duration }).promise().then( () => {
     expect(target).toBe(to)
-    expect(step.callCount).toBeGreaterThan(5)
-    doneTest()
+    expect(step.callCount).toBeGreaterThan(4)
+    doneCallback()
   })
 })
 
@@ -66,13 +69,13 @@ test("async/await interface", async () => {
   const start1 = Date.now()
   await tween({ from: 0, to: 100, step: step1, duration }).promise()
   expect(target).toBe(100)
-  expect(step1.callCount).toBeGreaterThan(5)
+  expect(step1.callCount).toBeGreaterThan(4)
 
   const start2 = Date.now()
   await tween({ from: -50, to: 50, step: step2, duration }).promise()
   expect(start2 - start1).toBeGreaterThan(duration)
   expect(target).toBe(50)
-  expect(step2.callCount).toBeGreaterThan(5)
+  expect(step2.callCount).toBeGreaterThan(4)
 })
 
 test("async/await interface - 2", async () => {
@@ -88,10 +91,10 @@ test("async/await interface - 2", async () => {
   ])
 
   expect(target1).toBe(2000)
-  expect(step1.callCount).toBeGreaterThan(3)
+  expect(step1.callCount).toBeGreaterThan(2)
 
   expect(target2).toBe(50)
-  expect(step2.callCount).toBeGreaterThan(5)
+  expect(step2.callCount).toBeGreaterThan(4)
 })
 
 test("easeFunctions", async () => {
@@ -123,7 +126,43 @@ test("easeFunctions", async () => {
   expect(last(historyArr2)).toBe(to)
   expect(last(historyArr3)).toBe(to)
 
-  expect(step1.callCount).toBeGreaterThan(5)
-  expect(step2.callCount).toBeGreaterThan(5)
-  expect(step2.callCount).toBeGreaterThan(5)
+  expect(step1.callCount).toBeGreaterThan(4)
+  expect(step2.callCount).toBeGreaterThan(4)
+  expect(step2.callCount).toBeGreaterThan(4)
+})
+
+test("cancel", async () => {
+  let target: number
+  let prevCallCount = 0
+  const realStep1 = (p: number) => { target = p }
+  const step = sinon.fake((p: number) => realStep1(p))
+  const from = 0, to = 100, duration = 1000
+  const { cancel } = tween({ from, to, step, duration })
+
+  await delay(100)
+  expect(step.callCount).toBeGreaterThan(4)
+  expect(step.callCount).toBeLessThan(10)
+  prevCallCount = step.callCount
+
+  await delay(100)
+  expect(step.callCount).toBeGreaterThan(prevCallCount)
+  prevCallCount = step.callCount
+
+  cancel()
+  await delay(100)
+  expect(step.callCount).toBe(prevCallCount)
+
+  await delay(1500)
+  expect(step.callCount).toBe(prevCallCount)
+  expect(target).not.toBe(to)
+})
+
+test("throw", () => {
+  expect(() => {
+    tween('wrong option')
+  }).toThrowError(Error)
+
+  expect(() => {
+    tween({ from: { x: 0 }, to: { notX: 100 }, step: console.log })
+  }).toThrowError(Error)
 })

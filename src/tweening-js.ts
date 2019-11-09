@@ -8,27 +8,37 @@ const defaultOptions = {
   done: () => {},
 }
 
-interface INumbers {
-  [key: string]: number
-}
-
-type TValue = INumbers | number
+type TNumberObj = { [key: string]: number }
+type TFromToAsNumbers = [number, number]
+type TFromToAsNumberObjs = [TNumberObj, TNumberObj]
 
 interface IOptions {
   step: Function
   done?: Function
-  from: TValue
-  to: TValue
+  from: number | object
+  to: number | object
   duration?: number
   easeFunction?: (n: number) => number
 }
 
-const isValidNumber = (n:any): n is number => typeof n === 'number' && !isNaN(n)
-const isValue = (value: any): value is TValue => {
-  if (typeof value === 'number') return true
+const isFromToNumber = (n:any): n is number => typeof n === 'number' && !isNaN(n)
+const isFromToNumberObj = (value: any): value is TNumberObj => {
   if (typeof value !== 'object') return false
+  return Object.keys(value).every(key => isFromToNumber(value[key]))
+}
 
-  return Object.keys(value).every(key => isValidNumber(value[key]))
+const isFromToAsNumbers = (arr: any[]): arr is TFromToAsNumbers => {
+  return arr.length === 2 && arr.every(isFromToNumber)
+}
+
+const isFromToAsNumberObjs = (arr: any[]): arr is TFromToAsNumberObjs => {
+  if (arr.length !== 2) return false
+  if (!arr.every(isFromToNumberObj)) return false
+
+  const [from, to] = arr
+  if (Object.keys(from).join(':') !== Object.keys(to).join(':')) return false
+
+  return true
 }
 
 const isOptions = (options: any): options is IOptions => {
@@ -37,11 +47,10 @@ const isOptions = (options: any): options is IOptions => {
   const { step, done, from, to, duration, easeFunction } = options
   if (typeof step !== 'function') return false
   if (typeof done !== 'function') return false
-  if (!isValue(from)) return false
-  if (!isValue(to)) return false
   if (typeof duration !== 'number') return false
   if (typeof easeFunction !== 'function') return false
   if (typeof from !== typeof to) return false
+  if (typeof from !== 'number' && typeof from !== 'object') return false
 
   return true
 }
@@ -62,6 +71,11 @@ export const tween = (_options: IOptions) => {
   if (!isOptions(options)) throw new Error('Wrong options: ' + JSON.stringify(options))
 
   const { duration, easeFunction, from, to, step, done } = options
+  const fromTo = [from, to]
+  if (!isFromToAsNumberObjs(fromTo) && !isFromToAsNumbers(fromTo)) {
+    throw new Error(`Wrong '[from,to]' ${JSON.stringify(fromTo)}`)
+  }
+
   const { modifiedDone, promise } = getPromise(done)
   const startTime = pnow()
 
@@ -71,7 +85,7 @@ export const tween = (_options: IOptions) => {
     // 현재시각:duration = x:1 ==> 현재시각/duration = x
     const x = Math.min((pnow() - startTime) / duration, 1)
     const y = easeFunction(x)
-    step(updateState(from, to, y))
+    step(updateState(fromTo, y))
 
     if (x === 1) return modifiedDone()
 
@@ -85,21 +99,15 @@ export const tween = (_options: IOptions) => {
   }
 }
 
-type TUpdateNumber = (from: number, to: number, y: number) => number
-const updateNumber: TUpdateNumber = (from, to, y) => from + (to - from) * y
+type TGetRealY = (from: number, to: number, y: number) => number
+const getRealY: TGetRealY = (from, to, y) => from + (to - from) * y
 
-const updateState = ( from: TValue, to: TValue, y: number) => {
-  if(isValidNumber(from) && isValidNumber(to)) return updateNumber(from, to, y)
+const updateState = (fromTo: TFromToAsNumbers | TFromToAsNumberObjs,  y: number) => {
+  if (isFromToAsNumbers(fromTo)) return getRealY(fromTo[0], fromTo[1], y)
 
-  if (typeof from !== 'object' || typeof to !== 'object') {
-    throw new TypeError("Wrong 'from' or 'to'")
-  }
-
-  const newState = { ...from }
-  Object.keys(newState).forEach( k => {
-    newState[k] = updateNumber(from[k], to[k], y)
-  })
-  return newState
+  const [from, to] = fromTo
+  const reducer = (prev: object, k: string) => ({ ...prev, [k]: getRealY(from[k], to[k], y) })
+  return Object.keys(from).reduce(reducer, {})
 }
 
 declare const window: any;
