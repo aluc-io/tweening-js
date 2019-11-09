@@ -7,11 +7,13 @@ Javascript tweening library which support **promise interface**
 and use `requestAnimationFrame` written in typescript.
 
 **tweening-js** does not directly handle DOM elements,
-making it compatible with any frontend framework such as React, Vue, Angular.
+making it compatible with any frontend framework such as **React**, **Vue**, **Angular**.
 
 ## Install
 
 ```
+$ npm install tweening-js
+## or
 $ yarn add tweening-js
 ```
 
