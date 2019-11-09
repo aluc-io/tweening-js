@@ -10,7 +10,7 @@ module.exports = api => {
       }],
     ],
     plugins: [
-      './asset/babel-plugin-rewire/babel-plugin-rewire.js',
+      'babel-plugin-rewire-ts',
       '@babel/plugin-transform-runtime',
     ]
   } : {
