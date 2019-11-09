@@ -18,7 +18,7 @@ jobs:
 
       # run tests!
       - run: yarn test
-      - run: yarn build
+      - run: export NODE_ENV=production && yarn build
       - run: cat coverage/lcov.info | npx coveralls
       - persist_to_workspace:
           root: .
