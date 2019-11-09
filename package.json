@@ -8,7 +8,7 @@
     "build": "yarn clean && webpack && npx tsc && mv build/*.d.ts ./lib/",
     "test": "jest --coverage",
     "test:watch": "jest --watch",
-    "prepare": "yarn clean && yarn test && yarn build"
+    "prepublishOnly": "yarn clean && yarn test && yarn build"
   },
   "repository": {
     "type": "git",
