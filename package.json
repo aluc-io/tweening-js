@@ -4,11 +4,10 @@
   "version": "2.0.0-rc.3",
   "description": "Javascript tweening library which support Promise interface written in typescript",
   "scripts": {
-    "clean": "rimraf lib && rimraf build",
-    "build": "yarn clean && webpack && npx tsc && mv build/*.d.ts ./lib/",
+    "clean": "rimraf lib && rimraf build && rimraf coverage",
+    "build": "webpack && npx tsc && mv build/*.d.ts ./lib/",
     "test": "jest --coverage",
-    "test:watch": "jest --watch",
-    "prepublishOnly": "yarn clean && yarn test && yarn build"
+    "test:watch": "jest --watch"
   },
   "repository": {
     "type": "git",
@@ -43,6 +42,7 @@
     "@types/sinon": "^7.5.0",
     "babel-loader": "^8.0.6",
     "babel-plugin-rewire-ts": "^1.3.3",
+    "coveralls": "^3.0.7",
     "jest": "^24.9.0",
     "mkdirp": "^0.5.1",
     "rimraf": "^3.0.0",

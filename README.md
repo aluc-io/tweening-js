@@ -1,6 +1,7 @@
 # tweening-js
 
 [![CircleCI](https://circleci.com/gh/aluc-io/tweening-js/tree/master.svg?style=svg)](https://circleci.com/gh/aluc-io/tweening-js/tree/master)
+[![Coverage Status](https://coveralls.io/repos/github/aluc-io/tweening-js/badge.svg?branch=master)](https://coveralls.io/github/aluc-io/tweening-js?branch=master)
 
 Javascript tweening library which support **promise interface**
 and use `requestAnimationFrame` written in typescript.
