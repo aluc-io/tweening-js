@@ -36,7 +36,8 @@ jobs:
       - run: yarn install
       - attach_workspace:
           at: /home/circleci/repo
-      - run: npm publish
+      - run:
+          echo "//registry.npmjs.org/:_authToken=$NPM_TOKEN" >> ~/.npmrc && npm publish
 
 workflows:
   version: 2
