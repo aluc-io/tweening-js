@@ -6,6 +6,7 @@
   "scripts": {
     "clean": "rimraf lib && rimraf build && rimraf coverage",
     "build": "webpack && npx tsc && mv build/*.d.ts ./lib/",
+    "dev": "webpack --watch",
     "test": "jest --coverage",
     "test:watch": "jest --watch"
   },

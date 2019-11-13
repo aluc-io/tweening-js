@@ -1,6 +1,5 @@
 import { tween, easeFunctions } from './tweening-js'
 import sinon from 'sinon'
-import { declareOpaqueType } from '@babel/types'
 
 const { inQuad, inOutQuad } = easeFunctions
 
@@ -165,4 +164,38 @@ test("throw", () => {
   expect(() => {
     tween({ from: { x: 0 }, to: { notX: 100 }, step: console.log })
   }).toThrowError(Error)
+})
+
+test("use arguments as options", async () => {
+  const step = sinon.fake((p: number) => {})
+  const done = sinon.fake((p: number) => {})
+  const fakeEaseFunction = sinon.fake((n: number) => n)
+  const rewired = require('./tweening-js')
+  const core = rewired.__get__('core')
+  const fakeCore = sinon.fake(core)
+  rewired.__set__('core', fakeCore)
+
+  expect(() => {
+    tween(3, 103)
+  }).toThrowError(Error)
+
+  tween(2, 102, step)
+  expect(fakeCore.callCount).toBe(1)
+  expect(fakeCore.getCall(0).args[0].from).toBe(2)
+  expect(fakeCore.getCall(0).args[0].to).toBe(102)
+  expect(fakeCore.getCall(0).args[0].duration).toBe(400)
+
+  await tween(3, 103, step, 500, fakeEaseFunction, done).promise()
+  expect(fakeCore.callCount).toBe(2)
+  expect(fakeCore.getCall(1).args[0].from).toBe(3)
+  expect(fakeCore.getCall(1).args[0].to).toBe(103)
+  expect(fakeCore.getCall(1).args[0].duration).toBe(500)
+  expect(done.callCount).toBe(1)
+  expect(fakeEaseFunction.callCount).toBeGreaterThan(20)
+
+  tween({ from: 4, to: 104, step, duration: 504 })
+  expect(fakeCore.callCount).toBe(3)
+  expect(fakeCore.getCall(2).args[0].from).toBe(4)
+  expect(fakeCore.getCall(2).args[0].to).toBe(104)
+  expect(fakeCore.getCall(2).args[0].duration).toBe(504)
 })
