@@ -1,7 +1,7 @@
 {
   "name": "tweening-js",
   "main": "lib/tweening-js.js",
-  "version": "2.0.1",
+  "version": "2.1.0",
   "description": "Javascript tweening library which support Promise interface written in typescript",
   "scripts": {
     "clean": "rimraf lib && rimraf build && rimraf coverage",
