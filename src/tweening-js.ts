@@ -21,10 +21,19 @@ interface IOptions {
   easeFunction?: (n: number) => number
 }
 
+interface IFullOptions {
+  step: Function
+  done: Function
+  from: number | object
+  to: number | object
+  duration: number
+  easeFunction: (n: number) => number
+}
+
 const isFromToNumber = (n:any): n is number => typeof n === 'number' && !isNaN(n)
-const isFromToNumberObj = (value: any): value is TNumberObj => {
-  if (typeof value !== 'object') return false
-  return Object.keys(value).every(key => isFromToNumber(value[key]))
+const isFromToNumberObj = (obj: any): obj is TNumberObj => {
+  if (typeof obj !== 'object') return false
+  return Object.keys(obj).every(key => isFromToNumber(obj[key]))
 }
 
 const isFromToAsNumbers = (arr: any[]): arr is TFromToAsNumbers => {
@@ -41,7 +50,7 @@ const isFromToAsNumberObjs = (arr: any[]): arr is TFromToAsNumberObjs => {
   return true
 }
 
-const isOptions = (options: any): options is IOptions => {
+const isFullOptions = (options: any): options is IFullOptions => {
   if (typeof options !== 'object') return false
 
   const { step, done, from, to, duration, easeFunction } = options
@@ -57,7 +66,7 @@ const isOptions = (options: any): options is IOptions => {
 
 const getPromise = (done: Function) => {
   let modifiedDone: Function = () => {}
-  const promise = new Promise((resolve) => {
+  const promise = new Promise<void>((resolve) => {
     modifiedDone = () => {
       resolve()
       done()
@@ -66,10 +75,34 @@ const getPromise = (done: Function) => {
   return { promise, modifiedDone }
 }
 
-export const tween = (_options: IOptions) => {
-  const options = { ...defaultOptions, ..._options }
-  if (!isOptions(options)) throw new Error('Wrong options: ' + JSON.stringify(options))
+interface IReturn {
+  cancel: () => void
+  promise: () => Promise<void>
+}
 
+type TTween = {
+  (from: number, to: number, step: Function, durtaion?: number, easeFunction?: (n: number) => number, done?: Function): IReturn
+  (options: IOptions): IReturn
+}
+
+export const tween: TTween = (...args: any[]) => {
+  const options = (isFromToNumberObj(args[0]) || typeof args[0] === 'number')
+    ? {
+      from: args[0],
+      to: args[1],
+      step: args[2],
+      duration: args[3] || defaultOptions.duration,
+      easeFunction: args[4] || defaultOptions.easeFunction,
+      done: args[5] || defaultOptions.done,
+    } :
+    { ...defaultOptions, ...args[0] }
+
+  if (!isFullOptions(options)) throw new Error('Wrong options: ' + JSON.stringify(options))
+
+  return core(options)
+}
+
+const core = (options: IFullOptions) => {
   const { duration, easeFunction, from, to, step, done } = options
   const fromTo = [from, to]
   if (!isFromToAsNumberObjs(fromTo) && !isFromToAsNumbers(fromTo)) {
@@ -117,9 +150,4 @@ const tweeningJS = { easeFunctions, tween }
 // Browser export as a global
 if(typeof window === 'object') {
   window.tweeningJS = tweeningJS
-}
-
-// Node Export
-if (typeof module !== "undefined" && module.exports) {
-  module.exports = tweeningJS
 }

@@ -5,7 +5,6 @@ module.exports = api => {
         targets: { node: 'current' }
       }],
       ["@babel/typescript", {
-        isTSX: true,
         allExtensions: true,
       }],
     ],
