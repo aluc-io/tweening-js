@@ -1,5 +1,12 @@
 version: 2
 
+
+- &fastlane
+    run:
+        name: Fastlane
+        no_output_timeout: 60m
+        command: bundle exec fastlane ${LANE:-$CIRCLE_JOB}   
+        
 jobs:
   build:
     docker:
@@ -7,3 +14,10 @@ jobs:
     steps:
       - checkout
       - run: echo "hello world"
+
+
+workflows:
+  version: 2
+  workflow:
+    jobs:
+    - build
