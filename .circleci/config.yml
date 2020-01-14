@@ -1,12 +1,10 @@
-version: 2
-
-
 - &fastlane
     run:
-        name: Fastlane
-        no_output_timeout: 60m
-        command: bundle exec fastlane ${LANE:-$CIRCLE_JOB}   
-        
+      name: Fastlane
+      no_output_timeout: 60m
+      command: bundle exec fastlane ${LANE:-$CIRCLE_JOB}   
+
+version: 2        
 jobs:
   build:
     docker:
@@ -20,4 +18,4 @@ workflows:
   version: 2
   workflow:
     jobs:
-    - build
+      - build
