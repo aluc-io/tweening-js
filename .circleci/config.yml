@@ -1,7 +1,9 @@
+version: 2
+
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.4.2-jessie-node
+      - image: circleci/ruby:2.7.0
     steps:
       - checkout
       - run: echo "hello world"
