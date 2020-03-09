@@ -3,7 +3,7 @@ version: 2
 jobs:
   build:
     docker:
-      - image: circleci/ruby:2.7.0
+      - image: circleci/nodejs:12.16.1
     steps:
       - checkout
       - run: echo "hello world"
