@@ -1,8 +1,3 @@
-- &fastlane
-    run:
-      name: Fastlane
-      no_output_timeout: 60m
-      command: bundle exec fastlane ${LANE:-$CIRCLE_JOB}   
 
 version: 2        
 jobs:
@@ -12,6 +7,7 @@ jobs:
     steps:
       - checkout
       - run: echo "hello world"
+      - run: echo $PWD
 
 
 workflows:
